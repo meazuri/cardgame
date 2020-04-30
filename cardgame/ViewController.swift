@@ -12,28 +12,34 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var flipCountLabel: UILabel!
     
-    @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet private var cardButtons: [UIButton]!
     
-    lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count+1)/2)
+    private lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
+    
+    var numberOfPairsOfCards : Int{
+        get{
+            return (cardButtons.count+1)/2
+        }
+    }
     var emojiesChoices = ["🦇","😱","🙀","😈","🎃","👻",
                     "🍭","🍬","🍎"]
-    var flipCount = 0 {
+    private(set) var flipCount = 0 {
         didSet{
             
             flipCountLabel.text = "Flips :\(flipCount)"
         }
     }
-    var emoji = [Int:String]()
+   private var emoji = [Int:String]()
     func emoji (for card : Card) -> String {
         
         if emoji[card.identifier] == nil , emojiesChoices.count > 0 {
-            let randomIndex = Int( arc4random_uniform(UInt32(emojiesChoices.count)))
+            let randomIndex = emojiesChoices.count.arc4random
             emoji[card.identifier] = emojiesChoices.remove(at: randomIndex)
         }
         
         return emoji[card.identifier] ?? "?"
     }
-    func updateViewFromModel() {
+    private func updateViewFromModel() {
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
@@ -48,7 +54,7 @@ class ViewController: UIViewController {
             
         }
     }
-    @IBAction func touchCard(_ sender: UIButton) {
+    @IBAction private func touchCard(_ sender: UIButton) {
         flipCount += 1
         if let card = cardButtons.firstIndex(of: sender){
             game.chooseCard(at: card)
@@ -58,7 +64,7 @@ class ViewController: UIViewController {
         }
     }
    
-    
+   
 //    func flipCard(withEmoji emoji: String , on Button :UIButton) {
 //        if Button.currentTitle == emoji {
 //            Button.backgroundColor = #colorLiteral(red: 1, green: 0.5763723254, blue: 0, alpha: 1)
@@ -69,4 +75,14 @@ class ViewController: UIViewController {
 //    }
     
 }
-
+extension Int {
+       var arc4random: Int{
+        if self > 0 {
+           return Int( arc4random_uniform(UInt32(self)))
+        }else if self < 0{
+            return -Int( arc4random_uniform(UInt32(abs(self))))
+        }else{
+            return 0
+        }
+       }
+   }
