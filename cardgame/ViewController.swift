@@ -21,8 +21,10 @@ class ViewController: UIViewController {
             return (cardButtons.count+1)/2
         }
     }
-    var emojiesChoices = ["🦇","😱","🙀","😈","🎃","👻",
-                    "🍭","🍬","🍎"]
+    //var emojiesChoices = ["🦇","😱","🙀","😈","🎃","👻",
+     //               "🍭","🍬","🍎"]
+    var emojiesChoices = "🦇😱🙀😈🎃👻🍭🍬🍎"
+
     private(set) var flipCount = 0 {
         didSet{
             
@@ -33,8 +35,8 @@ class ViewController: UIViewController {
     func emoji (for card : Card) -> String {
         
         if emoji[card] == nil , emojiesChoices.count > 0 {
-            let randomIndex = emojiesChoices.count.arc4random
-            emoji[card] = emojiesChoices.remove(at: randomIndex)
+            let randomStringIndex = emojiesChoices.index(emojiesChoices.startIndex,offsetBy: emojiesChoices.count.arc4random)
+            emoji[card] = String(emojiesChoices.remove(at: randomStringIndex))
         }
         
         return emoji[card] ?? "?"
