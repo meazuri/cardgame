@@ -29,15 +29,15 @@ class ViewController: UIViewController {
             flipCountLabel.text = "Flips :\(flipCount)"
         }
     }
-   private var emoji = [Int:String]()
+   private var emoji = [Card:String]()
     func emoji (for card : Card) -> String {
         
-        if emoji[card.identifier] == nil , emojiesChoices.count > 0 {
+        if emoji[card] == nil , emojiesChoices.count > 0 {
             let randomIndex = emojiesChoices.count.arc4random
-            emoji[card.identifier] = emojiesChoices.remove(at: randomIndex)
+            emoji[card] = emojiesChoices.remove(at: randomIndex)
         }
         
-        return emoji[card.identifier] ?? "?"
+        return emoji[card] ?? "?"
     }
     private func updateViewFromModel() {
         for index in cardButtons.indices {
